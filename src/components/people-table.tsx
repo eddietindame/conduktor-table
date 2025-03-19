@@ -8,26 +8,49 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
 } from '@/components/ui'
 import { usePersonSheet } from '@/components/person-sheet'
 import { Person } from '@/types/people'
 import data from '@/../random-people-data.json'
 
-const PAGE_SIZE = 10
+const PAGE_SIZES = [10, 20, 50, 100]
 
 export const PeopleTable = () => {
   const { openPersonSheet } = usePersonSheet()
   const [page, setPage] = useState(1)
+  const [pageSize, setPageSize] = useState(10)
 
   const cols = ['Name', 'DOB', 'Email', 'Verified', 'Salary']
-  const totalPages = Math.ceil(data.ctRoot.length / PAGE_SIZE)
+  const totalPages = Math.ceil(data.ctRoot.length / pageSize)
   const paginatedData: Person[] = data.ctRoot.slice(
-    (page - 1) * PAGE_SIZE,
-    page * PAGE_SIZE,
+    (page - 1) * pageSize,
+    page * pageSize,
   )
 
   return (
     <div className="p-4">
+      <div className="mb-4 flex gap-4">
+        <Select
+          value={pageSize.toString()}
+          onValueChange={val => setPageSize(parseInt(val, 10))}
+        >
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Set page size" />
+          </SelectTrigger>
+          <SelectContent>
+            {PAGE_SIZES.map(size => (
+              <SelectItem key={size} value={size.toString()}>
+                {size} per page
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -43,7 +66,7 @@ export const PeopleTable = () => {
               <TableCell>{person.dob}</TableCell>
               <TableCell>{person.email}</TableCell>
               <TableCell>{person.verified ? '✔' : '✖'}</TableCell>
-              <TableCell>${person.salary.toLocaleString()}</TableCell>
+              <TableCell>£{person.salary.toLocaleString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>

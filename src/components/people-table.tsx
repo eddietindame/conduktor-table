@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import data from '@/../random-people-data.json'
+
 import {
   Table,
   Button,
@@ -9,13 +9,15 @@ import {
   TableCell,
   TableBody,
 } from '@/components/ui'
+import { usePersonSheet } from '@/components/person-sheet'
 import { Person } from '@/types/people'
+import data from '@/../random-people-data.json'
 
 const PAGE_SIZE = 10
 
 export const PeopleTable = () => {
+  const { openPersonSheet } = usePersonSheet()
   const [page, setPage] = useState(1)
-  const [selectedPerson, setSelectedPerson] = useState<Person | null>(null)
 
   const cols = ['Name', 'DOB', 'Email', 'Verified', 'Salary']
   const totalPages = Math.ceil(data.ctRoot.length / PAGE_SIZE)
@@ -36,7 +38,7 @@ export const PeopleTable = () => {
         </TableHeader>
         <TableBody>
           {paginatedData.map((person, index) => (
-            <TableRow key={index} onClick={() => setSelectedPerson(person)}>
+            <TableRow key={index} onClick={() => openPersonSheet(person)}>
               <TableCell>{person.name}</TableCell>
               <TableCell>{person.dob}</TableCell>
               <TableCell>{person.email}</TableCell>
@@ -60,15 +62,6 @@ export const PeopleTable = () => {
           Next
         </Button>
       </div>
-      {selectedPerson && (
-        <div>
-          <h2>{selectedPerson.name}</h2>
-          <p>DOB: {selectedPerson.dob}</p>
-          <p>Email: {selectedPerson.email}</p>
-          <p>Verified: {selectedPerson.verified ? 'Yes' : 'No'}</p>
-          <p>Salary: ${selectedPerson.salary.toLocaleString()}</p>
-        </div>
-      )}
     </div>
   )
 }

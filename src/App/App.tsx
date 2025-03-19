@@ -1,9 +1,12 @@
 import { PeopleTable } from '@/components/people-table'
+import { PersonSheetProvider } from '@/components/person-sheet'
 
 export function App() {
   return (
-    <main>
-      <PeopleTable />
-    </main>
+    <PersonSheetProvider>
+      <main>
+        <PeopleTable />
+      </main>
+    </PersonSheetProvider>
   )
 }

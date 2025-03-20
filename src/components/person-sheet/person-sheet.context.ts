@@ -16,6 +16,6 @@ export const PersonSheetContext = createContext<
 export const usePersonSheet = () => {
   const context = useContext(PersonSheetContext)
   if (!context)
-    throw new Error('usePerson must be used within a PersonSheetProvider')
+    throw new Error('usePersonSheet must be used within a PersonSheetProvider')
   return context
 }

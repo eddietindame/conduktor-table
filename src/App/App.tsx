@@ -1,12 +1,11 @@
 import { PeopleTable } from '@/components/people-table'
-import { PersonSheetProvider } from '@/components/person-sheet'
+import { usePersonSheet } from '@/components/person-sheet'
 
 export function App() {
+  const { openPersonSheet } = usePersonSheet()
   return (
-    <PersonSheetProvider>
-      <main>
-        <PeopleTable />
-      </main>
-    </PersonSheetProvider>
+    <main>
+      <PeopleTable onClickPerson={openPersonSheet} />
+    </main>
   )
 }
